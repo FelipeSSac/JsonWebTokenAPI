@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-interface ITokenPayload {
+export interface ITokenPayload {
   id: string;
+  email: string;
   iat: number;
   exp: number;
 }

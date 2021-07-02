@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import User from '../models/User';
+import User from '../entities/User';
 
 class AuthController {
   async authenticate(req: Request, res: Response) {
@@ -22,7 +22,7 @@ class AuthController {
       return res.sendStatus(401);
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_ENCRYPT , { expiresIn: '1d' });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_ENCRYPT , { expiresIn: '1d' });
 
     delete user.password;
     

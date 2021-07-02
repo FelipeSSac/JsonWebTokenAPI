@@ -1,11 +1,19 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
-import User from '../models/User';
+import User from '../entities/User';
 
 class UserController {
   index(req: Request, res: Response){
-    return res.send({ userId: req.userId });
+    return res.status(200).send({ userId: req.userId });
+  }
+
+  async list(req: Request, res: Response) {
+    const repository = getRepository(User);
+
+    const users = await repository.find();
+
+    return res.status(200).json(users);
   }
   
   async store(req: Request, res: Response) {
@@ -15,13 +23,13 @@ class UserController {
     const userExists = await repository.findOne({ where: { email } })
 
     if (userExists) {
-      return res.send(409);
+      return res.sendStatus(409);
     }
 
     const user = repository.create({ email, password });
     await repository.save(user)
 
-    return res.json(user);
+    return res.status(201).json(user);
   }
 }
 

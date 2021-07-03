@@ -1,48 +1,62 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
-import Message from '../entities/Message';
-
-import jwt from 'jsonwebtoken';
-import { ITokenPayload }from '../middlewares/authMiddleware';
+import MessageService from '../services/MessageService';
 
 class MessageController {
   async list(req: Request, res: Response){
-    const repository = getRepository(Message);
-    const messages = await repository.find({
-      relations: ["user"],
-    }); 
+    const messageService = new MessageService();
 
-    messages.forEach(message =>{
-      delete message.user.password;
-    })
+    try {
+      const messages = await messageService.list();
 
-    return res.status(200).json(messages);
+      return res.status(200).json(messages);
+    } catch {
+      return res.sendStatus(400);
+    }
   }
 
   async create(req: Request, res: Response){
-    const repository = getRepository(Message);
+    const messageService = new MessageService();
 
     const { text } = req.body;
     const { authorization } = req.headers;
+    
+    try {
+      const message = messageService.create({ text, authorization });
 
-    const token = authorization.replace('Bearer', '').trim();
-    let user_id;
+      return res.status(200).json((await message));
+    } catch (err) {
+      return res.status(401).json({ message: err.message });
+    }
+  }
+  
+  async update(req: Request, res: Response) {
+    const messageService = new MessageService();
+
+    const { id, text } = req.body;
 
     try {
-      const data = jwt.verify(token, process.env.JWT_ENCRYPT);
-      const { id } = data as ITokenPayload;
-      user_id = id;
+      const message = await messageService.update({ id, text })
 
-    } catch {
-      return res.sendStatus(401);
+      return res.status(202).json(message)
+    } catch (err) {
+      return res.status(409).json({ message: err.message })
     }
+  }
 
-    let message = repository.create({ text, user_id });
-    await repository.save(message);
+  async delete(req: Request, res: Response) {
+    const messageService = new MessageService();
 
-    return res.status(201).send(message);
-  } 
+    const { id } = req.body;
+
+    try {
+      const message = await messageService.delete(id)
+
+      return res.status(202).json(message)
+    } catch (err) {
+      return res.status(409).json({ message: err.message })
+    }
+  }
 }
 
 export default new MessageController();

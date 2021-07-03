@@ -8,14 +8,14 @@ import AuthController from './app/controllers/AuthController';
 
 const router = Router();
 
+//List all users
+router.get('/users', authMiddleware, UserController.list);
 //Register
 router.post('/users', UserController.create);
 //Update password
 router.put('/users', authMiddleware, UserController.update);
 //Delete user (soft delete)
 router.delete('/users', authMiddleware, UserController.delete);
-//List all users
-router.get('/users', authMiddleware, UserController.list);
 
 //Login authentication
 router.post('/auth', AuthController.authenticate);
@@ -24,5 +24,9 @@ router.post('/auth', AuthController.authenticate);
 router.get('/message', authMiddleware, MessageController.list);
 //Post Message
 router.post('/message', authMiddleware, MessageController.create);
+//Edit Message
+router.put('/message', authMiddleware, MessageController.update);
+//Delete Message
+router.delete('/message', authMiddleware, MessageController.delete);
 
 export default router;

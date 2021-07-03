@@ -25,6 +25,7 @@ class AuthController {
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_ENCRYPT , { expiresIn: '1d' });
 
     delete user.password;
+    delete user.is_deleted;
     
     return res.json({
       user,

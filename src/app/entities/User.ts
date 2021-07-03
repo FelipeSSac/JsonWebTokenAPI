@@ -12,6 +12,9 @@ class User {
   @Column()
   password: string;
 
+  @Column()
+  is_deleted: boolean;
+
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {

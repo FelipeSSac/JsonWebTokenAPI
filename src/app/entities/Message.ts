@@ -23,6 +23,9 @@ class Message {
   @Column()
   user_id: string;
 
+  @Column()
+  is_deleted: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 }

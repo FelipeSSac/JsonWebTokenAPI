@@ -23,13 +23,18 @@ export class CreateUsersTable1625166442937 implements MigrationInterface {
                     name: 'password',
                     type: 'varchar',
                 },
+                {
+                    name: 'is_deleted',
+                    type: 'boolean',
+                    default: 'false',
+                },
             ],
         }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropTable('users');
-        await queryRunner.query('DROP EXTENSION "uuid-ossp"');
+        await queryRunner.query('DROP EXTENSION IF EXISTS "uuid-ossp"');
     }
 
 

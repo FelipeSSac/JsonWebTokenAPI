@@ -9,18 +9,20 @@ import AuthController from './app/controllers/AuthController';
 const router = Router();
 
 //Register
-router.post('/users', UserController.store);
-//Verify token
-router.get('/users', authMiddleware, UserController.index);
+router.post('/users', UserController.create);
+//Update password
+router.put('/users', authMiddleware, UserController.update);
+//Delete user (soft delete)
+router.delete('/users', authMiddleware, UserController.delete);
 //List all users
-router.get('/users/list', authMiddleware, UserController.list);
+router.get('/users', authMiddleware, UserController.list);
 
-//Get token
+//Login authentication
 router.post('/auth', AuthController.authenticate);
 
 //List messages
 router.get('/message', authMiddleware, MessageController.list);
 //Post Message
-router.post('/message', authMiddleware, MessageController.store);
+router.post('/message', authMiddleware, MessageController.create);
 
 export default router;

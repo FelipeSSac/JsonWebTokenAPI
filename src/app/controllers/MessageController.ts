@@ -20,7 +20,7 @@ class MessageController {
     return res.status(200).json(messages);
   }
 
-  async store(req: Request, res: Response){
+  async create(req: Request, res: Response){
     const repository = getRepository(Message);
 
     const { text } = req.body;

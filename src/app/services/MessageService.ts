@@ -17,9 +17,11 @@ class MessageService {
   }
 
   async list(){
-    const messages = await this.messageRepository.find({ 
-      relations: ["user"] 
-    });
+    const messages = await this.messageRepository
+      .createQueryBuilder('message')
+      .leftJoinAndSelect('message.user', 'user')
+      .orderBy('created_at', 'ASC')
+      .getMany();
 
     messages.forEach(message =>{
       delete message.user.password;

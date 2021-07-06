@@ -20,7 +20,7 @@ class MessageService {
     const messages = await this.messageRepository
       .createQueryBuilder('message')
       .leftJoinAndSelect('message.user', 'user')
-      .orderBy('created_at', 'DESC')
+      .orderBy('created_at', 'ASC')
       .getMany();
 
     messages.forEach(message =>{

@@ -4,8 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node build/index.js",
-    "build": "tsc",
     "dev": "npx nodemon --exec ts-node --files src/index.ts",
     "typeorm": "npx ts-node ./node_modules/typeorm/cli.js"
   },
@@ -21,7 +19,6 @@
     "@types/cors": "^2.8.10",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
